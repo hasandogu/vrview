@@ -32,7 +32,7 @@ ReticleRenderer.prototype.setVisibility = function(isVisible) {
 ReticleRenderer.prototype.createReticle_ = function() {
   // Make a torus.
   var geometry = new THREE.TorusGeometry(0.02, 0.005, 10, 20);
-  var material = new THREE.MeshBasicMaterial({color: 0x000000});
+  var material = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
   var torus = new THREE.Mesh(geometry, material);
 
   return torus;
