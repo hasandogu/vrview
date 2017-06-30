@@ -47,6 +47,17 @@ function Player(selector, contentInfo) {
   // Expose a public .isPaused attribute.
   this.isPaused = false;
 
+  // Expose a public .isMuted attribute.
+  this.isMuted = false;
+  if (typeof contentInfo.muted !== 'undefined') {
+    this.isMuted = contentInfo.muted;
+  }
+
+  // Other public attributes
+  this.currentTime = 0;
+  this.duration = 0;
+  this.volume = contentInfo.volume != undefined ? contentInfo.volume : 1;
+
   if (Util.isIOS()) {
     this.injectFullscreenStylesheet_();
   }
@@ -83,6 +94,10 @@ Player.prototype.pause = function() {
   this.sender.send({type: Message.PAUSE});
 };
 
+/**
+ * Equivalent of HTML5 setSrc().
+ * @param {String} contentInfo
+ */
 Player.prototype.setContent = function(contentInfo) {
   this.absolutifyPaths_(contentInfo);
   var data = {
@@ -99,6 +114,39 @@ Player.prototype.setVolume = function(volumeLevel) {
     volumeLevel: volumeLevel
   };
   this.sender.send({type: Message.SET_VOLUME, data: data});
+};
+
+Player.prototype.getVolume = function() {
+  return this.volume;
+};
+
+/**
+ * Sets the mute state of the video element. true is muted, false is unmuted.
+ */
+Player.prototype.mute = function(muteState) {
+  var data = {
+    muteState: muteState
+  };
+  this.sender.send({type: Message.MUTED, data: data});
+};
+
+/**
+ * Set the current time of the media being played
+ * @param {Number} time
+ */
+Player.prototype.setCurrentTime = function(time) {
+  var data = {
+    currentTime: time
+  };
+  this.sender.send({type: Message.SET_CURRENT_TIME, data: data});
+};
+
+Player.prototype.getCurrentTime = function() {
+  return this.currentTime;
+};
+
+Player.prototype.getDuration = function() {
+  return this.duration;
 };
 
 /**
@@ -138,16 +186,41 @@ Player.prototype.onMessage_ = function(event) {
   }
   var type = message.type.toLowerCase();
   var data = message.data;
-
   switch (type) {
     case 'ready':
+      if (data !== undefined && data.duration !== undefined) {
+        this.duration = data.duration;
+      }
     case 'modechange':
     case 'error':
     case 'click':
+    case 'ended':
+    case 'getposition':
       this.emit(type, data);
       break;
+    case 'volumechange':
+      this.volume = data;
+      this.emit('volumechange', data);
+      break;
+    case 'muted':
+      this.isMuted = data;
+      this.emit('mute', data);
+      break;
+    case 'timeupdate':
+      this.currentTime = data;
+      this.emit('timeupdate', {
+        currentTime: this.currentTime,
+        duration: this.duration
+      });
+      break;
+    case 'play':
     case 'paused':
       this.isPaused = data;
+      if (this.isPaused) {
+        this.emit('pause', data);
+      } else {
+        this.emit('play', data);
+      }
       break;
     case 'enter-fullscreen':
     case 'enter-vr':
@@ -230,6 +303,11 @@ Player.prototype.absolutifyPaths_ = function(contentInfo) {
     }
   }
 };
-
+/**
+ * Get position YAW, PITCH
+ */
+Player.prototype.getPosition = function() {
+    this.sender.send({type: Message.GET_POSITION, data: {}});
+};
 
 module.exports = Player;
