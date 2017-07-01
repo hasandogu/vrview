@@ -4,8 +4,12 @@
   "description": "Embed VR content into your webpage.",
   "main": "index.js",
   "dependencies": {
+    "commander": "^2.10.0",
     "es6-promise": "^3.0.2",
     "eventemitter3": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "object-assign": "^4.1.1",
+    "semver": "^5.3.0",
     "shaka-player": "^2.0.0",
     "stats-js": "^1.0.0-alpha1",
     "three": "^0.84.0",
@@ -17,13 +21,15 @@
   "devDependencies": {
     "browserify": "^13.1.1",
     "derequire": "^2.0.6",
+    "is-builtin-module": "^1.0.0",
     "rollup": "^0.37.2",
     "uglify-js": "^3.0.17",
     "uglifyjs": "^2.4.10",
+    "validate-npm-package-license": "^3.0.1",
     "watchify": "^3.8.0"
   },
   "scripts": {
-    "_mkdir": "mkdir -p build",
+    "_mkdir": "mkdirp build",
     "build-min": "npm run _mkdir && browserify src/embed/with-analytics.js | derequire | uglifyjs -c > build/embed.min.js && npm run build-three-closure",
     "build-dev": "npm run _mkdir && browserify src/embed/with-analytics.js | derequire > build/embed.js && npm run build-three-closure",
     "build-api-min": "npm run _mkdir && browserify --standalone VRView src/api/main.js | derequire | uglifyjs -c > build/vrview.min.js",
