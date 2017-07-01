@@ -24156,6 +24156,7 @@ exports.Scene = Scene;
 exports.Mesh = Mesh;
 exports.VideoTexture = VideoTexture;
 exports.MeshBasicMaterial = MeshBasicMaterial;
+exports.ShaderMaterial = ShaderMaterial;
 exports.TextureLoader = TextureLoader;
 exports.PerspectiveCamera = PerspectiveCamera;
 exports.Object3D = Object3D;
