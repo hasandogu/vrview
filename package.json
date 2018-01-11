@@ -5,26 +5,26 @@
   "main": "index.js",
   "dependencies": {
     "@tweenjs/tween.js": "^16.11.0",
-    "commander": "^2.11.0",
+    "commander": "^2.13.0",
     "es6-promise": "^3.0.2",
     "eventemitter3": "^1.2.0",
     "mkdirp": "^0.5.1",
     "object-assign": "^4.1.1",
     "semver": "^5.4.1",
-    "shaka-player": "^2.2.2",
+    "shaka-player": "^2.3.0",
     "stats-js": "^1.0.0-alpha1",
     "three": "^0.84.0",
-    "urijs": "^1.18.12",
+    "urijs": "^1.19.0",
     "webvr-boilerplate": "^0.4.6",
-    "webvr-polyfill": "^0.9.39"
+    "webvr-polyfill": "^0.9.41"
   },
   "devDependencies": {
     "browserify": "^13.1.1",
     "derequire": "^2.0.6",
-    "eslint": "^4.2.0",
+    "eslint": "^4.15.0",
     "eslint-config-google": "^0.9.1",
     "rollup": "^0.37.2",
-    "uglify-es": "^3.0.24",
+    "uglify-es": "^3.3.5",
     "watchify": "^3.8.0"
   },
   "scripts": {
