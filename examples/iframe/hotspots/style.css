@@ -1,0 +1,99 @@
+html, body {
+    background-color: #000;
+    color: #eee;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  p {
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+  }
+  
+  h1, h2, h3, p {
+    margin: 1rem;
+  }
+  
+  p.caption {
+    font-size: 0.7rem;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+  
+  iframe {
+    display: block;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #vrview {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  #controls {
+    overflow: hidden;
+    background: #eee;
+    margin: 0 auto;
+  }
+  
+    #controls > * {
+      margin: 8px;
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  
+    #controls > *:hover {
+      opacity: 1;
+    }
+  
+  
+  #toggleplay {
+    float: left;
+    background: url('img/ic_pause_black_24dp.svg');
+    width: 24px;
+    height: 24px;
+  }
+  
+  #toggleplay.paused {
+    background: url('img/ic_play_arrow_black_24dp.svg');
+  }
+  
+  #time {
+    float: left;
+    height: 19px;
+    padding-top: 5px;
+  }
+  
+  #togglemute {
+    float: right;
+    background: url('img/ic_volume_up_black_24dp.svg');
+    width: 24px;
+    height: 24px;
+  }
+  
+  #togglemute.muted {
+    background: url('img/ic_volume_off_black_24dp.svg');
+  }
+  
+  #volumerange {
+    float: right;
+    width: 100px;
+    height: 24px;
+  }

@@ -8,6 +8,7 @@
     "commander": "^2.13.0",
     "es6-promise": "^3.0.2",
     "eventemitter3": "^1.2.0",
+    "http-server": "^0.11.1",
     "mkdirp": "^0.5.1",
     "object-assign": "^4.1.1",
     "semver": "^5.4.1",
