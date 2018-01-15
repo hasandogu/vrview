@@ -323,6 +323,8 @@ function IFrameMessageSender(iframe) {
   // On iOS, if the iframe is across domains, also send DeviceMotion data.
   if (this.isIOS_()) {
     window.addEventListener('devicemotion', this.onDeviceMotion_.bind(this), false);
+	
+    window.addEventListener('message', this.onMessage_.bind(this), false);
   }
 }
 
@@ -341,6 +343,20 @@ IFrameMessageSender.prototype.onDeviceMotion_ = function(e) {
   };
 
   this.send(message);
+};
+
+
+IFrameMessageSender.prototype.onMessage_ = function(event) {
+  var message = event.data;
+  var type = message.type.toLowerCase();
+  var data = message.data;
+
+  switch (type) {
+    case 'devicemotion':
+      this.onDeviceMotion_(message.deviceMotionEvent);
+      break;
+    default:
+  }
 };
 
 IFrameMessageSender.prototype.cloneDeviceMotionEvent_ = function(e) {
@@ -546,6 +562,7 @@ Player.prototype.getCurrentTime = function() {
 Player.prototype.getDuration = function() {
   return this.duration;
 };
+
 Player.prototype.setFullscreen = function() {
   this.sender.send({type: Message.SET_FULLSCREEN});
 };
@@ -630,6 +647,9 @@ Player.prototype.onMessage_ = function(event) {
     case 'exit-fullscreen':
       this.setFakeFullscreen_(false);
       break;
+    case 'devicemotion':
+      this.emit('devicemotion', message.deviceMotionEvent);
+      break;	  
     default:
       console.warn('Got unknown message of type %s from %s', message.type, message.origin);
   }

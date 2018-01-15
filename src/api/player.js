@@ -148,6 +148,7 @@ Player.prototype.getCurrentTime = function() {
 Player.prototype.getDuration = function() {
   return this.duration;
 };
+
 Player.prototype.setFullscreen = function() {
   this.sender.send({type: Message.SET_FULLSCREEN});
 };
@@ -232,6 +233,9 @@ Player.prototype.onMessage_ = function(event) {
     case 'exit-fullscreen':
       this.setFakeFullscreen_(false);
       break;
+    case 'devicemotion':
+      this.emit('devicemotion', message.deviceMotionEvent);
+      break;	  
     default:
       console.warn('Got unknown message of type %s from %s', message.type, message.origin);
   }

@@ -22,9 +22,9 @@
  */
 function DeviceMotionSender() {
   // This is an iOS-specific workaround.
-  if (!this.isIOS_()) {
+/*  if (!this.isIOS_()) {
     return;
-  }
+  }*/
 
   window.addEventListener('devicemotion', this.onDeviceMotion_.bind(this), false);
 
@@ -65,7 +65,8 @@ DeviceMotionSender.prototype.cloneDeviceMotionEvent_ = function(e) {
       beta: e.rotationRate.beta,
       gamma: e.rotationRate.gamma,
     },
-    interval: e.interval
+    interval: e.interval,
+    timeStamp: e.timeStamp
   };
 };
 
