@@ -88,7 +88,7 @@ WorldRenderer.prototype.setScene = function(scene) {
     muted: scene.muted
   };
 
-  this.setDefaultYaw_(scene.defaultYaw || 0);
+//  this.setDefaultYaw_(scene.defaultYaw || 0);
 
   // Disable VR mode if explicitly disabled, or if we're loading a video on iOS
   // 9 or earlier.
@@ -97,7 +97,7 @@ WorldRenderer.prototype.setScene = function(scene) {
   }
 
   // Set various callback overrides in iOS.
-  if (Util.isIOS()) {
+  //if (Util.isIOS()) {
     this.manager.setFullscreenCallback(function() {
       Util.sendParentMessage({type: 'enter-fullscreen'});
     });
@@ -107,7 +107,7 @@ WorldRenderer.prototype.setScene = function(scene) {
     this.manager.setVRCallback(function() {
       Util.sendParentMessage({type: 'enter-vr'});
     });
-  }
+  //}
 
   // If we're dealing with an image, and not a video.
   if (scene.image && !scene.video) {
@@ -294,6 +294,8 @@ WorldRenderer.prototype.init_ = function(hideFullscreenButton) {
   this.scene = this.createScene_();
   this.scene.add(this.camera.parent);
 
+  // Set initial yaw to be at the center of the scene
+  this.setDefaultYaw_(0);
 
   // Watch the resize event.
   window.addEventListener('resize', this.onResize_.bind(this));

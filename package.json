@@ -36,6 +36,8 @@
     "build-analytics-dev": "npm run _mkdir && browserify src/embed/with-analytics.js | derequire > build/embed.js && npm run build-three-closure",
     "build-api-min": "npm run _mkdir && browserify --standalone VRView src/api/main.js | derequire | uglifyjs -c > build/vrview.min.js",
     "build-api-dev": "npm run _mkdir && browserify --standalone VRView src/api/main.js | derequire > build/vrview.js",
+    "build-comms-min": "npm run _mkdir && browserify scripts/js/main.js | derequire | uglifyjs -c > build/comms.min.js",
+    "build-comms-dev": "npm run _mkdir && browserify scripts/js/main.js | derequire > build/comms.js",
     "build": "npm run build-min; npm run build-dev; npm run build-api",
     "build-analytics": "npm run build-analytics-min; npm run build-analytics-dev; npm run build-api",
     "build-api": "npm run build-api-min; npm run build-api-dev",

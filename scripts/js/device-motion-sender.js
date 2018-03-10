@@ -20,6 +20,8 @@
  *
  * This is a workaround for https://bugs.webkit.org/show_bug.cgi?id=150072.
  */
+
+ 
 function DeviceMotionSender() {
   // This is an iOS-specific workaround.
 /*  if (!this.isIOS_()) {
@@ -27,7 +29,7 @@ function DeviceMotionSender() {
   }*/
 
   window.addEventListener('devicemotion', this.onDeviceMotion_.bind(this), false);
-
+ 
   // Find the right iFrame to send data to.
   this.iframes = document.querySelectorAll('iframe.vrview');
 }
@@ -86,4 +88,6 @@ DeviceMotionSender.prototype.isCrossDomainIframe_ = function(iframe) {
   return (html === null);
 };
 
-var dms = new DeviceMotionSender();
+//var dms = new DeviceMotionSender();
+module.exports = DeviceMotionSender;
+

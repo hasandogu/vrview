@@ -665,8 +665,10 @@ Player.prototype.onMessage_ = function(event) {
 Player.prototype.setFakeFullscreen_ = function(isFullscreen) {
   if (isFullscreen) {
     this.iframe.classList.add(FAKE_FULLSCREEN_CLASS);
+    Util.sendParentMessage({type: 'enter-fullscreen'});    
   } else {
     this.iframe.classList.remove(FAKE_FULLSCREEN_CLASS);
+    Util.sendParentMessage({type: 'exit-fullscreen'});    
   }
 };
 
