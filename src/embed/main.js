@@ -46,6 +46,8 @@ window.addEventListener('load', onLoad);
 var stats = new Stats();
 var scene = SceneInfo.loadFromGetParams();
 
+var webvr = new WebVRPolyfill(WebVRConfig)
+
 var worldRenderer = new WorldRenderer(scene);
 worldRenderer.on('error', onRenderError);
 worldRenderer.on('load', onRenderLoad);

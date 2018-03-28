@@ -7,6 +7,16 @@
             "type": "npm",
             "script": "build-min",
             "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "build-three-closure",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "build-all",
+            "problemMatcher": []
         }
     ]
 }

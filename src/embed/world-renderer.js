@@ -21,7 +21,12 @@ var SphereRenderer = require('./sphere-renderer');
 var TWEEN = require('@tweenjs/tween.js');
 var Util = require('../util');
 var VideoProxy = require('./video-proxy');
-var WebVRManager = require('webvr-boilerplate');
+var WebVRManager = require('../third_party/webvr-boilerplate/build/webvr-manager');
+
+var OrbitControls = require('../../node_modules/three/examples/js/controls/OrbitControls.js');
+var VRControls = require('../../node_modules/three/examples/js/controls/VRControls.js');
+var VREffect = require('../../node_modules/three/examples/js/effects/VREffect.js');
+
 
 var AUTOPAN_DURATION = 3000;
 var AUTOPAN_ANGLE = 0.4;
@@ -49,10 +54,21 @@ function WorldRenderer(params) {
   this.hotspotRenderer.on('blur', this.onHotspotBlur_.bind(this));
   this.reticleRenderer = new ReticleRenderer(this.camera);
 
+  var self = this;
+
   // Get the VR Display as soon as we initialize.
   navigator.getVRDisplays().then(function(displays) {
     if (displays.length > 0) {
-      this.vrDisplay = displays[0];
+      self.vrDisplay = displays[0];
+      self.controls = new THREE.VRControls(self.camera);
+    }
+    else {
+      self.controls = new THREE.OrbitControls(self.camera);
+      self.controls.enablePan = false;
+      self.controls.rotateSpeed = -0.05;
+      self.controls.enableDamping = true;
+      self.controls.dampingFactor = 0.075;
+      self.controls.target.set(0, 0, -0.0001);      
     }
   }.bind(this));
 
@@ -235,13 +251,16 @@ WorldRenderer.prototype.didLoadFail_ = function(message) {
 WorldRenderer.prototype.setDefaultYaw_ = function(angleRad) {
   // Rotate the camera parent to take into account the scene's rotation.
   // By default, it should be at the center of the image.
-  var display = this.controls.getVRDisplay();
+//  var display = this.controls.getVRDisplay();
   // For desktop, we subtract the current display Y axis
-  var theta = display.theta_ || 0;
-  // For devices with orientation we make the current view center
-  if (display.poseSensor_) {
-    display.poseSensor_.resetPose();
-  }
+  var theta = 0;
+/*  if (display) {
+    theta = display.theta_ || 0;
+    // For devices with orientation we make the current view center
+    if (display.poseSensor_) {
+      display.poseSensor_.resetPose();
+    }
+}*/
   this.camera.parent.rotation.y = (Math.PI / 2.0) + angleRad - theta;
 };
 
@@ -274,7 +293,7 @@ WorldRenderer.prototype.init_ = function(hideFullscreenButton) {
 
   container.appendChild(renderer.domElement);
 
-  var controls = new THREE.VRControls(camera);
+//  var controls = new THREE.VRControls(camera);
   var effect = new THREE.VREffect(renderer);
 
   // Disable eye separation.
@@ -288,7 +307,7 @@ WorldRenderer.prototype.init_ = function(hideFullscreenButton) {
   this.camera = camera;
   this.renderer = renderer;
   this.effect = effect;
-  this.controls = controls;
+//  this.controls = controls;
   this.manager = new WebVRManager(renderer, effect, {predistorted: false, hideButton: hideFullscreenButton});
 
   this.scene = this.createScene_();
