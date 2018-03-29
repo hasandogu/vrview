@@ -23,7 +23,7 @@ var Util = require('../util');
 var VideoProxy = require('./video-proxy');
 var WebVRManager = require('../third_party/webvr-boilerplate/build/webvr-manager');
 
-var OrbitControls = require('../../node_modules/three/examples/js/controls/OrbitControls.js');
+var OrbitControls = require('../third_party/three/OrbitControls.js');
 var VRControls = require('../../node_modules/three/examples/js/controls/VRControls.js');
 var VREffect = require('../../node_modules/three/examples/js/effects/VREffect.js');
 
@@ -56,19 +56,25 @@ function WorldRenderer(params) {
 
   var self = this;
 
+  // VR Controls
+  self.vrControls = new THREE.VRControls(self.camera);
+
+  // Orbit Controls
+  self.orbitControls = new THREE.OrbitControls(self.camera);
+  self.orbitControls.enablePan = false;
+  self.orbitControls.rotateSpeed = -0.05;
+  self.orbitControls.enableDamping = true;
+  self.orbitControls.dampingFactor = 0.075;
+  self.orbitControls.target.set(0, 0, -0.0001);
+
   // Get the VR Display as soon as we initialize.
   navigator.getVRDisplays().then(function(displays) {
     if (displays.length > 0) {
       self.vrDisplay = displays[0];
-      self.controls = new THREE.VRControls(self.camera);
+      self.controls = self.vrControls;
     }
     else {
-      self.controls = new THREE.OrbitControls(self.camera);
-      self.controls.enablePan = false;
-      self.controls.rotateSpeed = -0.05;
-      self.controls.enableDamping = true;
-      self.controls.dampingFactor = 0.075;
-      self.controls.target.set(0, 0, -0.0001);      
+      self.controls = self.orbitControls;
     }
   }.bind(this));
 
@@ -76,6 +82,14 @@ function WorldRenderer(params) {
 WorldRenderer.prototype = new EventEmitter();
 
 WorldRenderer.prototype.render = function(time) {
+  // Switch between orbit or VR controls
+  if (this.isVRMode()) {
+    this.controls = this.vrControls;
+  }
+  else {
+    this.controls = this.orbitControls;  
+  }
+  
   this.controls.update();
   TWEEN.update(time);
   this.effect.render(this.scene, this.camera);
@@ -352,6 +366,14 @@ WorldRenderer.prototype.onVRDisplayPresentChange_ = function(e) {
   if (!isVR && Util.isIOS()) {
     Util.sendParentMessage({type: 'exit-fullscreen'});
   }
+
+  // Switch between orbit or VR controls
+  if (this.isVRMode()) {
+    this.orbitControls.orbitControls.enabled = false;
+  }
+  else {
+    this.orbitControls.orbitControls.enabled = true;
+  }  
 
   // Emit a mode change event back to any listeners.
   this.emit('modechange', isVR);
